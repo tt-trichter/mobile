@@ -1,66 +1,106 @@
 package org.trichter.app
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import coil3.ImageLoader
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.KoinApplication
+import org.koin.compose.KoinMultiplatformApplication
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.dsl.KoinConfiguration
+import org.trichter.app.di.appModules
+import org.trichter.app.features.ble.di.bleModules
+import org.trichter.app.features.ble.presentation.BleScreen
+import org.trichter.app.features.ble.presentation.BleViewModel
+import org.trichter.app.features.runs.di.runsModule
+import org.trichter.app.features.runs.presentation.RunsScreen
+import org.trichter.app.features.runs.presentation.RunsViewModel
+import org.trichter.app.navigation.Routes
 
-import trichter_app.composeapp.generated.resources.Res
-import trichter_app.composeapp.generated.resources.compose_multiplatform
-import org.trichter.app.di.dataModule
-import org.trichter.app.di.networkModule
-import org.trichter.app.di.presentationModule
-import org.trichter.app.presentation.posts.RunsScreen
-import org.trichter.app.presentation.posts.RunsViewModel
-
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 @Preview
 fun App() {
-    KoinApplication(application = {
-        modules(
-            networkModule,
-            dataModule,
-            presentationModule
-        )
-    }) {
+    setSingletonImageLoaderFactory { context ->
+        ImageLoader.Builder(context).crossfade(true).build()
+    }
+
+    KoinMultiplatformApplication(config = KoinConfiguration { modules(appModules()) }) {
         MaterialTheme {
-            AppContent()
+            AppScreen()
         }
     }
 }
 
 @Composable
-private fun AppContent() {
-    setSingletonImageLoaderFactory { context ->
-        ImageLoader.Builder(context)
-            .crossfade(true)
-            .build()
-    }
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .safeContentPadding()
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+fun AppScreen(
+    navController: NavHostController = rememberNavController()
+) {
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController = navController) }
 
-            val viewModel: RunsViewModel = koinViewModel()
-            RunsScreen(viewModel = viewModel)
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Routes.RUNS.route,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            composable(route = Routes.RUNS.route) {
+                val viewModel: RunsViewModel = koinViewModel()
+                RunsScreen(viewModel = viewModel)
+            }
+            composable(route = Routes.BLE.route) {
+                val viewModel: BleViewModel = koinViewModel()
+                BleScreen(viewModel = viewModel)
+
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currenRoute = currentBackStackEntry?.destination?.route
+
+    val routes = listOf(Routes.RUNS, Routes.BLE)
+    NavigationBar {
+        routes.forEach { item ->
+            val isSelected = currenRoute == item.route
+            NavigationBarItem(
+                icon = {
+                    Icon(imageVector = item.icon, contentDescription = item.title)
+                },
+                label = {
+                    Text(text = item.title)
+                },
+                        selected = isSelected,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
     }
 }

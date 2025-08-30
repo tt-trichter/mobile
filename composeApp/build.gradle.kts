@@ -55,12 +55,6 @@ kotlin {
     jvmToolchain(21)
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.ktor.client.android)
-            implementation(libs.koin.android)
-        }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -76,25 +70,47 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
 
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
 
-            implementation(libs.koin.core)
+            api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.ktor)
+            implementation(libs.lifecycle.viewmodel)
+            implementation(libs.navigation.compose)
 
             implementation(libs.coil)
             implementation(libs.coil.network)
+
+            implementation(libs.compose.material.icons.core)
+
+            implementation(libs.kable)
+
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
+
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        androidMain.dependencies {
+            implementation(compose.preview)
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.android)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.kable.permissions)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
         wasmJsMain.dependencies {
             implementation(libs.ktor.client.js)
+        }
+
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
     }
 }
