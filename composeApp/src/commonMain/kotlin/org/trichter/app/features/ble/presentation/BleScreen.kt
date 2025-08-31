@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.icerock.moko.permissions.PermissionState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.trichter.app.features.ble.domain.models.ConnectionState
@@ -24,7 +25,8 @@ import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun BleScreen(viewModel: BleViewModel) {
-    val uiState by viewModel.state
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val searchUserState by viewModel.searchUserState.collectAsStateWithLifecycle()
 
 
     LaunchedEffect(uiState.permissionState) {
@@ -46,13 +48,16 @@ fun BleScreen(viewModel: BleViewModel) {
         uiState.connectionState == ConnectionState.Connecting -> BleConnectingScreen()
 
         uiState.connectionState == ConnectionState.Connected  -> BleConnectedScreen(
-            state = uiState.trichterState!!,
+            trichterState = uiState.trichterState!!,
             onReconnect = { Log.d("ConnectScreen", "onReconnect") },
-            onDisconnect = {  viewModel.disconnect()  },
+            onDisconnect = { viewModel.disconnect() },
             onAck = { viewModel.sendAck() },
-            onReset = { Log.d("ConnectScreen", "onReset")},
-            onSaveImage = { Log.d("ConnectScreen", "onSaveImage")},
-            onSaveRun = { meta: ResultMeta -> viewModel.saveRun(meta)}
+            onReset = { Log.d("ConnectScreen", "onReset") },
+            onSaveImage = { Log.d("ConnectScreen", "onSaveImage") },
+            onSaveRun = { meta: ResultMeta -> viewModel.saveRun(meta) },
+            searchUserState = searchUserState,
+            onQueryChange = viewModel::onQueryChange,
+            onUserClick = {},
         )
 
 

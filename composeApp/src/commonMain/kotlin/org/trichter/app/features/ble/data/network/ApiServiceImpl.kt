@@ -10,6 +10,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import org.trichter.app.features.ble.domain.models.NewRunDto
+import org.trichter.app.features.ble.domain.models.UserDto
 import org.trichter.app.features.runs.data.model.Run
 import org.trichter.app.util.Log
 
@@ -30,5 +31,19 @@ class ApiServiceImpl(private val httpClient: HttpClient) : ApiService {
             Log.e("HTTP", "HTTP ${response.status.value}: $errBody")
             throw IllegalStateException("HTTP ${response.status.value}: $errBody")
         }
+    }
+
+    override suspend fun searchUsers(name: String): Result<List<UserDto>> = runCatching {
+        val response = httpClient.get("$baseUrl/users/search") {
+            header(HttpHeaders.Accept, ContentType.Application.Json)
+            parameter("name", name)
+        }
+        if (!response.status.isSuccess()) {
+            val err = response.bodyAsText()
+            Log.e("HTTP", "HTTP ${response.status.value}: $err")
+            error("HTTP ${response.status.value}: $err")
+        }
+        response.body<List<UserDto>>()
+
     }
 }

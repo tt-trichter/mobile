@@ -22,6 +22,7 @@ import org.trichter.app.features.ble.domain.usecases.ObserveTrichterState
 import org.trichter.app.features.ble.domain.usecases.OpenAppSettings
 import org.trichter.app.features.ble.domain.usecases.RequestBluetoothPermissions
 import org.trichter.app.features.ble.domain.usecases.SaveRun
+import org.trichter.app.features.ble.domain.usecases.SearchUsers
 import org.trichter.app.features.ble.domain.usecases.SendAck
 import org.trichter.app.features.ble.domain.usecases.StartScan
 import org.trichter.app.features.ble.domain.usecases.StopScan
@@ -52,4 +53,5 @@ val bleDomainModule = module {
     factoryOf(::ObserveTrichterState)
     factoryOf(::SendAck)
     factoryOf(::SaveRun)
+    factoryOf(::SearchUsers)
 }
