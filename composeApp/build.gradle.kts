@@ -20,7 +20,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -30,26 +30,6 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
-    }
-    
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        outputModuleName.set("composeApp")
-        browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
-                }
-            }
-        }
-        binaries.executable()
     }
 
     jvmToolchain(21)
@@ -62,6 +42,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.materialIconsExtended)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
@@ -84,12 +65,27 @@ kotlin {
             implementation(libs.coil)
             implementation(libs.coil.network)
 
-            implementation(libs.compose.material.icons.core)
+//            implementation(libs.compose.material.icons.core)
+//            implementation(libs.compose.material.icons.core.jb)
+            implementation(libs.compose.material.icons.extended)
+//            implementation(libs.compose.material.icons.extended.jb)
+
 
             implementation(libs.kable)
 
-            implementation(libs.datastore)
-            implementation(libs.datastore.preferences)
+            api(libs.datastore)
+            api(libs.datastore.preferences)
+
+            api(libs.moko.permissions)
+            api(libs.moko.permissions.bluetooth)
+            api(libs.moko.permissions.location)
+            api(libs.moko.permissions.notifications)
+            api(libs.moko.permissions.compose)
+
+            implementation(libs.kotlinx.collections.immutable)
+
+            implementation(libs.compose.material3)
+            implementation(libs.compose.material3.jb)
 
         }
         androidMain.dependencies {
@@ -104,10 +100,6 @@ kotlin {
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
-        wasmJsMain.dependencies {
-            implementation(libs.ktor.client.js)
-        }
-
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -146,14 +138,14 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-compose.desktop {
-    application {
-        mainClass = "org.trichter.app.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.trichter.app"
-            packageVersion = "1.0.0"
-        }
-    }
-}
+//compose.desktop {
+//    application {
+//        mainClass = "org.trichter.app.MainKt"
+//
+//        nativeDistributions {
+//            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+//            packageName = "org.trichter.app"
+//            packageVersion = "1.0.0"
+//        }
+//    }
+//}

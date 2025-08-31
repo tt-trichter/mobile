@@ -2,10 +2,7 @@ package org.trichter.app
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -25,14 +22,14 @@ import org.koin.compose.KoinMultiplatformApplication
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.KoinConfiguration
-import org.trichter.app.di.appModules
-import org.trichter.app.features.ble.di.bleModules
+import org.trichter.app.di.getComposableAppModules
+import org.trichter.app.di.regularAppModules
 import org.trichter.app.features.ble.presentation.BleScreen
 import org.trichter.app.features.ble.presentation.BleViewModel
-import org.trichter.app.features.runs.di.runsModule
 import org.trichter.app.features.runs.presentation.RunsScreen
 import org.trichter.app.features.runs.presentation.RunsViewModel
 import org.trichter.app.navigation.Routes
+import org.trichter.app.ui.theme.TrichterTheme
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -42,12 +39,14 @@ fun App() {
         ImageLoader.Builder(context).crossfade(true).build()
     }
 
-    KoinMultiplatformApplication(config = KoinConfiguration { modules(appModules()) }) {
-        MaterialTheme {
+    val composableAppModules = getComposableAppModules()
+    KoinMultiplatformApplication(config = KoinConfiguration { modules(regularAppModules() + composableAppModules) }) {
+        TrichterTheme {
             AppScreen()
         }
     }
 }
+
 
 @Composable
 fun AppScreen(

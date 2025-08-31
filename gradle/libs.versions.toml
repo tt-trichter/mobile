@@ -1,5 +1,5 @@
 [versions]
-agp = "8.11.0"
+agp = "8.12.2"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
@@ -10,7 +10,7 @@ androidx-espresso = "3.7.0"
 androidx-lifecycle = "2.9.3"
 androidx-testExt = "1.3.0"
 composeHotReload = "1.0.0-beta06"
-composeMultiplatform = "1.8.2"
+composeMultiplatform = "1.9.0-rc01"
 junit = "4.13.2"
 kotlin = "2.2.10"
 kotlinx-coroutines = "1.10.2"
@@ -21,9 +21,16 @@ coil = "3.3.0"
 koin = "4.1.0"
 lifecycle-viewmodel = "2.9.3"
 navigation-compose = "2.9.0-rc01"
-compose-material = "1.7.3"
+compose-material-icons-jb = "1.7.3"
+compose-material-icons = "1.7.8"
 kable = "0.40.0"
 datastore = "1.1.7"
+moko-permissions = "0.20.1"
+moko-geolocation = "0.8.0"
+kotlinx-collections = "0.4.0"
+compose-material3 = "1.4.0-alpha18"
+compose-material3-jb = "1.9.0-alpha04"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -34,10 +41,10 @@ androidx-testExt-junit = { module = "androidx.test.ext:junit", version.ref = "an
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle"}
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -45,15 +52,12 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
-ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle-viewmodel"}
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin"}
@@ -61,13 +65,30 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose"}
 
-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose-material" }
+compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material-icons" }
+compose-material-icons-core-jb = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose-material-icons-jb" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-icons" }
+compose-material-icons-extended-jb = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "compose-material-icons-jb" }
 
 kable = { module = "com.juul.kable:kable-core", version.ref = "kable" }
 kable-permissions = { module = "com.juul.kable:kable-default-permissions", version.ref = "kable" }
 
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"}
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore"}
+
+moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
+moko-permissions-bluetooth = { module = "dev.icerock.moko:permissions-bluetooth", version.ref = "moko-permissions" }
+moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko-permissions" }
+moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
+moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
+
+moko-geolocation = { module = "dev.icerock.moko:geo", version.ref = "moko-geolocation" }
+moko-geolocation-compoe = { module = "dev.icerock.moko:geo-compose", version.ref = "moko-geolocation" }
+
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections" }
+
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+compose-material3-jb = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-material3-jb" }
 
 
 [plugins]
