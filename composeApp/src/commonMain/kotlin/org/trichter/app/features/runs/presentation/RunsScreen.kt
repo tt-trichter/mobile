@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import org.trichter.app.features.runs.data.model.Run
+import org.trichter.app.features.runs.presentation.components.RunCard
+import org.trichter.app.features.runs.presentation.components.RunCardPreview
 
 @Composable
 fun RunsScreen(viewModel: RunsViewModel) {
@@ -87,61 +89,7 @@ fun PostsList(runs: List<Run>) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(runs.size) { i ->
-            RunItem(run = runs[i])
-        }
-    }
-}
-
-@Composable
-fun RunItem(run: Run) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            AsyncImage(
-                model = "https://trichterstorage.blob.core.windows.net/" + run.image,
-                contentDescription = null,
-            )
-
-            Text(
-                text = "Post #${run.id}",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            run.user?.let { user ->
-                Text(
-                    text = "Run by ${user.name} (@${user.username})",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            } ?:
-                Text(
-                    text = "Run by unknown",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = run.data.rate.toString() + "L/min",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "User ID: ${run.userId}",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.outline
-            )
+            RunCard(runs[i])
         }
     }
 }

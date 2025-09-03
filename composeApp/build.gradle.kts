@@ -87,6 +87,8 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.material3.jb)
 
+            implementation(libs.human.readable)
+
         }
         androidMain.dependencies {
             implementation(compose.preview)

@@ -30,6 +30,7 @@ moko-geolocation = "0.8.0"
 kotlinx-collections = "0.4.0"
 compose-material3 = "1.4.0-alpha18"
 compose-material3-jb = "1.9.0-alpha04"
+human-readable = "1.12.0"
 
 
 [libraries]
@@ -89,6 +90,8 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 compose-material3-jb = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-material3-jb" }
+
+human-readable = { module = "nl.jacobras:Human-Readable", version.ref = "human-readable"}
 
 
 [plugins]
